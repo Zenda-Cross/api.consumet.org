@@ -37,7 +37,8 @@ EXPOSE 3000
 
 # add an healthcheck, useful
 # healthcheck by calling the additional script exposed by the plugin
-# HEALTHCHECK --interval=30s --timeout=10s --start-period=5s CMD npm run healthcheck-manual
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s \
+  CMD node -e "require('http').get('http://localhost:3000/health', (res) => process.exit(res.statusCode === 200 ? 0 : 1))"
 
 # ENTRYPOINT [ "npm" ]
 CMD [ "npm", "start" ]
