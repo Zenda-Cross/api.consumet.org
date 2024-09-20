@@ -50,7 +50,7 @@ EXPOSE 3000
 # healthcheck with curl, but not recommended
 # HEALTHCHECK CMD curl --fail http://localhost:3000/health || exit 1
 # healthcheck by calling the additional script exposed by the plugin
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s CMD npm run healthcheck-manual
+# HEALTHCHECK --interval=30s --timeout=10s --start-period=5s CMD npm run healthcheck-manual
 
 # ENTRYPOINT [ "node" ]
 CMD [ "npm", "start" ]
