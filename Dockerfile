@@ -46,13 +46,6 @@ COPY --chown=nodejs:nodejs . .
 # exposed port/s
 EXPOSE 3000
 
-# add an healthcheck, useful
-# healthcheck with curl, but not recommended
-# HEALTHCHECK CMD curl --fail http://localhost:3000/health || exit 1
-# healthcheck by calling the additional script exposed by the plugin
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s \
-  CMD node -e "require('http').get('http://localhost:3000/health', (res) => process.exit(res.statusCode === 200 ? 0 : 1))"
-
 # ENTRYPOINT [ "node" ]
 CMD [ "npm", "start" ]
 
