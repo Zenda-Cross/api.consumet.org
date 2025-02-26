@@ -155,6 +155,7 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
       return reply.status(400).send({ message: 'id is required' });
 
     try {
+      console.log('zoro',episodeId, server,episodeId?.split('$').pop());
       const res = await zoro
         .fetchEpisodeSources(episodeId, server,episodeId?.split('$').pop())
         .catch((err) => reply.status(404).send({ message: err }));
