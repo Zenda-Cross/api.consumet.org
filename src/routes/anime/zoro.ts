@@ -157,7 +157,7 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
     try {
       console.log('zoro',episodeId, server,episodeId?.split('$').pop());
       const res = await zoro
-        .fetchEpisodeSources(episodeId, server,episodeId?.split('$').pop())
+        .fetchEpisodeSources(episodeId, server)
         .catch((err) => reply.status(404).send({ message: err }));
 
       reply.status(200).send(res);
