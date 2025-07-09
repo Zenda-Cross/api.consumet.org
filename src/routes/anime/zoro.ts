@@ -4,16 +4,25 @@ import { StreamingServers } from '@consumet/extensions/dist/models';
 
 const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
   const zoro = new ANIME.Zoro(process.env.ZORO_URL);
-  let baseUrl = "https://hianime.to";
-  if(process.env.ZORO_URL){
+  let baseUrl = 'https://hianime.to';
+  if (process.env.ZORO_URL) {
     baseUrl = `https://${process.env.ZORO_URL}`;
   }
 
   fastify.get('/', (_, rp) => {
     rp.status(200).send({
-      intro:
-        `Welcome to the zoro provider: check out the provider's website @ ${baseUrl}`,
-      routes: ['/:query', '/recent-episodes', '/top-airing', '/most-popular', '/most-favorite', '/latest-completed', '/recent-added', '/info?id', '/watch/:episodeId'],
+      intro: `Welcome to the zoro provider: check out the provider's website @ ${baseUrl}`,
+      routes: [
+        '/:query',
+        '/recent-episodes',
+        '/top-airing',
+        '/most-popular',
+        '/most-favorite',
+        '/latest-completed',
+        '/recent-added',
+        '/info?id',
+        '/watch/:episodeId',
+      ],
       documentation: 'https://docs.consumet.org/#tag/zoro',
     });
   });
@@ -98,14 +107,17 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
     reply.status(200).send(res);
   });
 
-  fastify.get('/studio/:studioId', async (request: FastifyRequest, reply: FastifyReply) => {
-    const studioId = (request.params as { studioId: string }).studioId;
-    const page = (request.query as { page: number }).page ?? 1;
+  fastify.get(
+    '/studio/:studioId',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const studioId = (request.params as { studioId: string }).studioId;
+      const page = (request.query as { page: number }).page ?? 1;
 
-    const res = await zoro.fetchStudio(studioId, page);
+      const res = await zoro.fetchStudio(studioId, page);
 
-    reply.status(200).send(res);
-  });
+      reply.status(200).send(res);
+    },
+  );
 
   fastify.get('/spotlight', async (request: FastifyRequest, reply: FastifyReply) => {
     const res = await zoro.fetchSpotlight();
@@ -113,14 +125,16 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
     reply.status(200).send(res);
   });
 
-  fastify.get('/search-suggestions/:query', async (request: FastifyRequest, reply: FastifyReply) => {
-    const query = (request.params as { query: string }).query;
+  fastify.get(
+    '/search-suggestions/:query',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const query = (request.params as { query: string }).query;
 
-    const res = await zoro.fetchSearchSuggestions(query);
+      const res = await zoro.fetchSearchSuggestions(query);
 
-    reply.status(200).send(res);
-  });
-
+      reply.status(200).send(res);
+    },
+  );
 
   fastify.get('/info', async (request: FastifyRequest, reply: FastifyReply) => {
     const id = (request.query as { id: string }).id;
@@ -142,7 +156,7 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
   });
   const watch = async (request: FastifyRequest, reply: FastifyReply) => {
     let episodeId = (request.params as { episodeId: string }).episodeId;
-    if(!episodeId){
+    if (!episodeId) {
       episodeId = (request.query as { episodeId: string }).episodeId;
     }
 
@@ -155,9 +169,9 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
       return reply.status(400).send({ message: 'id is required' });
 
     try {
-      console.log('zoro',episodeId, server,episodeId?.split('$').pop());
+      console.log('zoro', episodeId, server, episodeId?.split('$').pop());
       const res = await zoro
-        .fetchEpisodeSources(episodeId, server,episodeId?.split('$').pop())
+        .fetchEpisodeSources(episodeId, server, episodeId?.split('$').pop() as any)
         .catch((err) => reply.status(404).send({ message: err }));
 
       reply.status(200).send(res);
