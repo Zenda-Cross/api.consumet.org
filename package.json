@@ -23,7 +23,7 @@
     },
     "homepage": "https://github.com/consumet/consumet.ts#readme",
     "dependencies": {
-        "@consumet/extensions": "github:2004durgesh/consumet.ts/tree/fix/big-beautiful-fix",
+        "@consumet/extensions": "github:2004durgesh/consumet.ts#fix/big-beautiful-fix",
         "@fastify/cors": "^8.5.0",
         "@types/node": "^18.11.17",
         "@types/ws": "^8.5.3",
